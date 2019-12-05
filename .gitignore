@@ -1,0 +1,5 @@
+node_modules/
+mongodump.txt
+now.json
+next.config.js
+.next/
