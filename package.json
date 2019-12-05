@@ -1,7 +1,7 @@
 {
-  "name": "react-reserve",
-  "version": "1.0.0",
-  "description": "Project for MERN Stack - The Complete Guide",
+  "name": "@alekslario/mern-stack-demo-store",
+  "version": "1.0.1",
+  "description": "Mern stack store",
   "main": "index.js",
   "scripts": {
     "dev": "next",
