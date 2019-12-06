@@ -17,19 +17,13 @@ import catchErrors from "../utils/catchErrors";
 const INITIAL_PRODUCT = {
   name: "",
   price: "",
-  mediaL: "",
-  mediaM: "",
-  mediaS: "",
+  media: "",
   description: ""
 };
 
 function CreateProduct() {
   const [product, setProduct] = React.useState(INITIAL_PRODUCT);
-  const [mediaPreview, setMediaPreview] = React.useState({
-    mediaL: "",
-    mediaM: "",
-    mediaS: ""
-  });
+  const [mediaPreview, setMediaPreview] = React.useState("");
   const [success, setSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [disabled, setDisabled] = React.useState(true);
@@ -44,34 +38,34 @@ function CreateProduct() {
     const { name, value, files } = event.target;
     if (name.includes("media")) {
       setProduct(prevState => ({ ...prevState, [name]: files[0] || "" }));
-      setMediaPreview(prevState => ({
-        ...prevState,
-        [name]:
-          files.length > 0
-            ? window.URL.createObjectURL(files[0])
-            : "./static/image.png"
-      }));
+      setMediaPreview(
+        files.length > 0
+          ? window.URL.createObjectURL(files[0])
+          : "./static/image.png"
+      );
     } else {
       setProduct(prevState => ({ ...prevState, [name]: value }));
     }
   }
 
-  async function handleImageUpload(media) {
+  async function handleImageUpload(preset) {
     const data = new FormData();
-    data.append("upload_preset", "mern-stack-demo-store");
-    data.append("file", media);
+    data.append("upload_preset", preset);
+    data.append("file", product.media);
+    data.append("folder", "mern-stack-demo-store");
     data.append("cloud_name", "alekslario-dzki4zu2h");
-    const response = await axios.post(process.env.CLOUDINARY_URL, data);
-    const mediaUrl = response.data.url;
-    return mediaUrl;
+    const response = await axios.post(
+      process.env.CLOUDINARY_CLIENT_UPLOAD,
+      data
+    );
+    return response.data.url;
   }
 
   async function uploadImages() {
-    const { mediaL, mediaM, mediaS } = product;
     let [large, medium, small] = await Promise.all([
-      handleImageUpload(mediaL),
-      handleImageUpload(mediaM),
-      handleImageUpload(mediaS)
+      handleImageUpload("mern-stack-demo-store"),
+      handleImageUpload("mern-stack-demo-store-medium"),
+      handleImageUpload("mern-stack-demo-store-small")
     ]);
     return { large, medium, small };
   }
@@ -134,65 +128,24 @@ function CreateProduct() {
             value={product.price}
             onChange={handleChange}
           />
-        </Form.Group>
-        <Header as="h4" block>
-          <Icon name="file image" />
-          Media
-        </Header>
-        <Form.Group widths="equal">
-          <Image
-            src={mediaPreview.mediaL || "./static/image.png"}
-            rounded
-            centered
-            size="small"
-          />
           <Form.Field
-            hidden
             control={Input}
-            name="mediaL"
+            name="media"
             type="file"
-            label="XL"
+            label="Media"
             accept="image/*"
             content="Select Image"
             onChange={handleChange}
           />
         </Form.Group>
-        <Form.Group widths="equal">
-          <Image
-            src={mediaPreview.mediaM || "./static/image.png"}
-            rounded
-            centered
-            size="small"
-          />
-          <Form.Field
-            hidden
-            control={Input}
-            name="mediaM"
-            type="file"
-            label="M"
-            accept="image/*"
-            content="Select Image"
-            onChange={handleChange}
-          />
-        </Form.Group>
-        <Form.Group widths="equal">
-          <Image
-            src={mediaPreview.mediaS || "./static/image.png"}
-            rounded
-            centered
-            size="small"
-          />
-          <Form.Field
-            hidden
-            control={Input}
-            name="mediaS"
-            type="file"
-            label="S"
-            accept="image/*"
-            content="Select Image"
-            onChange={handleChange}
-          />
-        </Form.Group>
+
+        <Image
+          src={mediaPreview || "./static/image.png"}
+          rounded
+          centered
+          size="small"
+        />
+
         <Form.Field
           control={TextArea}
           name="description"

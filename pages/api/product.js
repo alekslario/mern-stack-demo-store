@@ -1,6 +1,13 @@
 import Product from "../../models/Product";
 import Cart from "../../models/Cart";
 import connectDb from "../../utils/connectDb";
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 connectDb();
 
@@ -50,11 +57,23 @@ async function handleDeleteRequest(req, res) {
   const { _id } = req.query;
   try {
     // 1) Delete product by id
-    await Product.findOneAndDelete({ _id });
+    const product = await Product.findOneAndDelete({ _id });
+
     // 2) Remove product from all carts, referenced as 'product'
     await Cart.updateMany(
       { "products.product": _id },
       { $pull: { products: { product: _id } } }
+    );
+    const { large, medium, small } = product.mediaUrl;
+    cloudinary.api.delete_resources(
+      [large, medium, small].map(
+        ele => "mern-stack-demo-store/" + ele.replace(/.+\/(.+?)\.webp$/i, "$1")
+      ),
+      (error, result) => {
+        if (error) {
+          console.log(error);
+        }
+      }
     );
     res.status(204).json({});
   } catch (error) {

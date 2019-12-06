@@ -1,5 +1,5 @@
 import { Card } from "semantic-ui-react";
-
+///c_fill,h_250,w_250/
 function ProductList({ products }) {
   function mapProductsToItems(products) {
     return products.map(({ _id, price, mediaUrl, name }) => ({
