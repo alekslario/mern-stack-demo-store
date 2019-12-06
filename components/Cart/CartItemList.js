@@ -8,10 +8,10 @@ import {
 } from "semantic-ui-react";
 import { useRouter } from "next/router";
 
-function CartItemList({ products, user, handleRemoveFromCart, success }) {
+const CartItemList = ({ products, user, handleRemoveFromCart, success }) => {
   const router = useRouter();
 
-  function mapCartProductsToItems(products) {
+  const mapCartProductsToItems = products => {
     return products.map(p => ({
       childKey: p.product._id,
       header: (
@@ -34,7 +34,7 @@ function CartItemList({ products, user, handleRemoveFromCart, success }) {
         />
       )
     }));
-  }
+  };
 
   if (success) {
     return (
@@ -70,6 +70,6 @@ function CartItemList({ products, user, handleRemoveFromCart, success }) {
   }
 
   return <Item.Group divided items={mapCartProductsToItems(products)} />;
-}
+};
 
 export default CartItemList;

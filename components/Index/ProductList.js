@@ -1,7 +1,7 @@
 import { Card } from "semantic-ui-react";
 ///c_fill,h_250,w_250/
-function ProductList({ products }) {
-  function mapProductsToItems(products) {
+const ProductList = ({ products }) => {
+  const mapProductsToItems = products => {
     return products.map(({ _id, price, mediaUrl, name }) => ({
       header: name,
       image: mediaUrl.small,
@@ -11,7 +11,7 @@ function ProductList({ products }) {
       childKey: _id,
       href: `/product?_id=${_id}`
     }));
-  }
+  };
 
   return (
     <Card.Group
@@ -21,6 +21,6 @@ function ProductList({ products }) {
       items={mapProductsToItems(products)}
     />
   );
-}
+};
 
 export default ProductList;

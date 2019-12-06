@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/router";
 import formatDate from "../../utils/formatDate";
 
-function AccountOrders({ orders }) {
+const AccountOrders = ({ orders }) => {
   const router = useRouter();
 
   function mapOrdersToPanels(orders) {
@@ -85,6 +85,6 @@ function AccountOrders({ orders }) {
       )}
     </>
   );
-}
+};
 
 export default AccountOrders;

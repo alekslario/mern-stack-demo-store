@@ -1,7 +1,7 @@
 {
   "name": "mern-stack-demo-store",
   "version": "1.0.1",
-  "description": "Mern stack store",
+  "description": "Mern stack demo store",
   "main": "index.js",
   "scripts": {
     "dev": "next",

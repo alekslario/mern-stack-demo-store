@@ -18,16 +18,16 @@ function Signup() {
   const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    const isUser = Object.values(user).every(el => Boolean(el));
+    const isUser = Object.values(user).every(el => !!el);
     isUser ? setDisabled(false) : setDisabled(true);
   }, [user]);
 
-  function handleChange(event) {
+  const handleChange = event => {
     const { name, value } = event.target;
     setUser(prevState => ({ ...prevState, [name]: value }));
-  }
+  };
 
-  async function handleSubmit(event) {
+  const handleSubmit = async event => {
     event.preventDefault();
 
     try {
@@ -42,7 +42,7 @@ function Signup() {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <>

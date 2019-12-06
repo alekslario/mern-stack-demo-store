@@ -8,12 +8,12 @@ import cookie from "js-cookie";
 import baseUrl from "../utils/baseUrl";
 import catchErrors from "../utils/catchErrors";
 
-function Cart({ products, user }) {
+const Cart = ({ products, user }) => {
   const [cartProducts, setCartProducts] = React.useState(products);
   const [success, setSuccess] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
-  async function handleRemoveFromCart(productId) {
+  const handleRemoveFromCart = async productId => {
     const url = `${baseUrl}/api/cart`;
     const token = cookie.get("token");
     const payload = {
@@ -22,9 +22,9 @@ function Cart({ products, user }) {
     };
     const response = await axios.delete(url, payload);
     setCartProducts(response.data);
-  }
+  };
 
-  async function handleCheckout(paymentData) {
+  const handleCheckout = async paymentData => {
     try {
       setLoading(true);
       const url = `${baseUrl}/api/checkout`;
@@ -38,7 +38,7 @@ function Cart({ products, user }) {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <Segment loading={loading}>
@@ -55,7 +55,7 @@ function Cart({ products, user }) {
       />
     </Segment>
   );
-}
+};
 
 Cart.getInitialProps = async ctx => {
   const { token } = parseCookies(ctx);

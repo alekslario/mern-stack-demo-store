@@ -8,11 +8,9 @@ Router.onRouteChangeStart = () => NProgress.start();
 Router.onRouteChangeComplete = () => NProgress.done();
 Router.onRouteChangeError = () => NProgress.done();
 
-function Header({ user }) {
+const Header = ({ user }) => {
   const router = useRouter();
-  const isRoot = user && user.role === "root";
-  const isAdmin = user && user.role === "admin";
-  const isRootOrAdmin = isRoot || isAdmin;
+  const isRootOrAdmin = user && (user.role === "root" || user.role === "admin");
 
   function isActive(route) {
     return route === router.pathname;
@@ -82,6 +80,6 @@ function Header({ user }) {
       </Container>
     </Menu>
   );
-}
+};
 
 export default Header;

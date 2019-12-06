@@ -1,4 +1,4 @@
-function catchErrors(error, displayError) {
+const catchErrors = (error, displayError) => {
   let errorMsg;
   if (error.response) {
     // The request was made and the server responsed with a status code that is not in the range of 2XX
@@ -19,6 +19,6 @@ function catchErrors(error, displayError) {
     console.error("Error message", errorMsg);
   }
   displayError(errorMsg);
-}
+};
 
 export default catchErrors;

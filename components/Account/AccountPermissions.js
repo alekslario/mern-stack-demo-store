@@ -5,7 +5,7 @@ import cookie from "js-cookie";
 import baseUrl from "../../utils/baseUrl";
 import formatDate from "../../utils/formatDate";
 
-function AccountPermissions() {
+const AccountPermissions = () => {
   const [users, setUsers] = React.useState([]);
 
   React.useEffect(() => {
@@ -46,7 +46,7 @@ function AccountPermissions() {
       </Table>
     </div>
   );
-}
+};
 
 function UserPermission({ user }) {
   const [admin, setAdmin] = React.useState(user.role === "admin");
@@ -60,9 +60,9 @@ function UserPermission({ user }) {
     updatePermission();
   }, [admin]);
 
-  function handleChangePermission() {
+  const handleChangePermission = () => {
     setAdmin(prevState => !prevState);
-  }
+  };
 
   async function updatePermission() {
     const url = `${baseUrl}/api/account`;

@@ -22,7 +22,7 @@ function AddProductToCart({ user, productId }) {
     };
   }, [success]);
 
-  async function handleAddProductToCart() {
+  const handleAddProductToCart = async () => {
     try {
       setLoading(true);
       const url = `${baseUrl}/api/cart`;
@@ -36,7 +36,7 @@ function AddProductToCart({ user, productId }) {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <Input

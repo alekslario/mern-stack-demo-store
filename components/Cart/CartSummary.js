@@ -3,32 +3,32 @@ import StripeCheckout from "react-stripe-checkout";
 import { Button, Segment, Divider } from "semantic-ui-react";
 import calculateCartTotal from "../../utils/calculateCartTotal";
 
-function CartSummary({ products, handleCheckout, success }) {
-  const [cartAmount, setCartAmount] = React.useState(0);
-  const [stripeAmount, setStripeAmount] = React.useState(0);
-  const [isCartEmpty, setCartEmpty] = React.useState(false);
+const CartSummary = ({ products, handleCheckout, success }) => {
+  const [{ cartTotal, stripeTotal, isCartEmpty }, setState] = React.useState({
+    cartTotal: 0,
+    stripeTotal: 0,
+    isCartEmpty: false
+  });
 
   React.useEffect(() => {
     const { cartTotal, stripeTotal } = calculateCartTotal(products);
-    setCartAmount(cartTotal);
-    setStripeAmount(stripeTotal);
-    setCartEmpty(products.length === 0);
+    setState({ cartTotal, stripeTotal, isCartEmpty: products.length === 0 });
   }, [products]);
 
   return (
     <>
       <Divider />
       <Segment clearing size="large">
-        <strong>Sub total:</strong> ${cartAmount}
+        <strong>Sub total:</strong> ${cartTotal}
         <StripeCheckout
-          name="React Reserve"
-          amount={stripeAmount}
+          name="Mern-stack-demo-store"
+          amount={stripeTotal}
           image={products.length > 0 ? products[0].product.mediaUrl.small : ""}
           currency="USD"
           shippingAddress={true}
           billingAddress={true}
           zipCode={true}
-          stripeKey="pk_test_IWb9PWvedXLJ1d2RPdUKnENP00oU72Hkf0"
+          stripeKey={process.env.STRIPE_PUBLISHABLE_KEY}
           token={handleCheckout}
           triggerEvent="onClick"
         >
@@ -43,6 +43,6 @@ function CartSummary({ products, handleCheckout, success }) {
       </Segment>
     </>
   );
-}
+};
 
 export default CartSummary;

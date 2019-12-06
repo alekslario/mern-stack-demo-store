@@ -30,11 +30,11 @@ function CreateProduct() {
   const [error, setError] = React.useState("");
 
   React.useEffect(() => {
-    const isProduct = Object.values(product).every(el => Boolean(el));
+    const isProduct = Object.values(product).every(el => !!el);
     isProduct ? setDisabled(false) : setDisabled(true);
   }, [product]);
 
-  function handleChange(event) {
+  const handleChange = event => {
     const { name, value, files } = event.target;
     if (name.includes("media")) {
       setProduct(prevState => ({ ...prevState, [name]: files[0] || "" }));
@@ -46,9 +46,18 @@ function CreateProduct() {
     } else {
       setProduct(prevState => ({ ...prevState, [name]: value }));
     }
-  }
+  };
 
-  async function handleImageUpload(preset) {
+  const uploadImages = async () => {
+    let [large, medium, small] = await Promise.all([
+      handleImageUpload("mern-stack-demo-store"),
+      handleImageUpload("mern-stack-demo-store-medium"),
+      handleImageUpload("mern-stack-demo-store-small")
+    ]);
+    return { large, medium, small };
+  };
+
+  const handleImageUpload = async preset => {
     const data = new FormData();
     data.append("upload_preset", preset);
     data.append("file", product.media);
@@ -59,16 +68,7 @@ function CreateProduct() {
       data
     );
     return response.data.url;
-  }
-
-  async function uploadImages() {
-    let [large, medium, small] = await Promise.all([
-      handleImageUpload("mern-stack-demo-store"),
-      handleImageUpload("mern-stack-demo-store-medium"),
-      handleImageUpload("mern-stack-demo-store-small")
-    ]);
-    return { large, medium, small };
-  }
+  };
 
   async function handleSubmit(event) {
     try {

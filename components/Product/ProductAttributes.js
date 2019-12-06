@@ -4,19 +4,17 @@ import axios from "axios";
 import baseUrl from "../../utils/baseUrl";
 import { useRouter } from "next/router";
 
-function ProductAttributes({ description, _id, user }) {
+const ProductAttributes = ({ description, _id, user }) => {
   const [modal, setModal] = React.useState(false);
   const router = useRouter();
-  const isRoot = user && user.role === "root";
-  const isAdmin = user && user.role === "admin";
-  const isRootOrAdmin = isRoot || isAdmin;
+  const isRootOrAdmin = user && (user.role === "root" || user.role === "admin");
 
-  async function handleDelete() {
+  const handleDelete = async () => {
     const url = `${baseUrl}/api/product`;
     const payload = { params: { _id } };
     await axios.delete(url, payload);
     router.push("/");
-  }
+  };
 
   return (
     <>
@@ -50,6 +48,6 @@ function ProductAttributes({ description, _id, user }) {
       )}
     </>
   );
-}
+};
 
 export default ProductAttributes;
