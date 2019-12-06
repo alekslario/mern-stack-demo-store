@@ -45,9 +45,14 @@ function CreateProduct() {
 
   async function handleImageUpload() {
     const data = new FormData();
+    data.append("upload_preset", "mern-stack-demo-store");
     data.append("file", product.media);
     data.append("cloud_name", "alekslario-dzki4zu2h");
     const response = await axios.post(process.env.CLOUDINARY_URL, data);
+    // const response = await fetch(process.env.CLOUDINARY_URL, {
+    //   method: "POST",
+    //   body: data
+    // });
     const mediaUrl = response.data.url;
     return mediaUrl;
   }
@@ -83,7 +88,7 @@ function CreateProduct() {
         success={success}
         onSubmit={handleSubmit}
       >
-        <Message error header="Oops!" content={error} />
+        <Message error header="Oops!" content={error || "Error"} />
         <Message
           success
           icon="check"

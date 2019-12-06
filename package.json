@@ -1,5 +1,5 @@
 {
-  "name": "@alekslario/mern-stack-demo-store",
+  "name": "mern-stack-demo-store",
   "version": "1.0.1",
   "description": "Mern stack store",
   "main": "index.js",
